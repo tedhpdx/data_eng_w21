@@ -54,6 +54,7 @@ if __name__ == '__main__':
 
     # Process messages
     total_count = 0
+    data = []
     try:
         while True:
             msg = consumer.poll(1.0)
@@ -70,13 +71,16 @@ if __name__ == '__main__':
                 # Check for Kafka message
                 record_key = msg.key()
                 record_value = msg.value()
-                data = json.loads(record_value)
+                data.append(json.loads(record_value))
                 total_count += 1
                 print("Consumed record with key {} and value {}, \
                       and updated total count to {}"
                       .format(record_key, record_value, total_count))
+        with open('breadcrumb_data.json', 'w') as outfile:
+            json.dump(data, outfile)
     except KeyboardInterrupt:
         pass
     finally:
         # Leave group and commit final offsets
         consumer.close()
+
