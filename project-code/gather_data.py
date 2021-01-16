@@ -5,10 +5,9 @@ import ccloud_lib
 
 if __name__ == '__main__':
 
-    #json_file_path = '/home/herring/data_eng_w21/project-code/breadcrumb_data.json'
-    json_file_path = 'breadcrumb_data.json'
-
+    #config_file = '/home/herring/.confluent/librdkafka.config'
     config_file = 'librdkafka.config'
+
     topic = 'breadcrumbs'
     conf = ccloud_lib.read_ccloud_config(config_file)
 
@@ -38,7 +37,7 @@ if __name__ == '__main__':
             print("Produced record to topic {} partition [{}] @ offset {}"
                   .format(msg.topic(), msg.partition(), msg.offset()))
 
-    #for breadcrumb in range(len(rj)):
+    #for breadcrumb in range(10):
     for breadcrumb in range(len(rj)):
             record_key = "alice"
             record_value = json.dumps(rj[breadcrumb])
