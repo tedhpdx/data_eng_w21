@@ -67,7 +67,7 @@ if __name__ == '__main__':
                     with open('breadcrumb_data.json', 'w') as outfile:
                         json.dump(data, outfile)
                     data = []
-                print("Waiting for message or event/error in poll()")
+                #print("Waiting for message or event/error in poll()")
                 continue
             elif msg.error():
                 print('error: {}'.format(msg.error()))
@@ -77,9 +77,9 @@ if __name__ == '__main__':
                 record_value = msg.value()
                 data.append(json.loads(record_value))
                 total_count += 1
-                print("Consumed record with key {} and value {}, \
-                      and updated total count to {}"
-                      .format(record_key, record_value, total_count))
+                #print("Consumed record with key {} and value {}, \
+                #      and updated total count to {}"
+                #      .format(record_key, record_value, total_count))
 
     except KeyboardInterrupt:
         pass

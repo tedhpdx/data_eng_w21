@@ -34,8 +34,8 @@ if __name__ == '__main__':
             print("Failed to deliver message: {}".format(err))
         else:
             delivered_records += 1
-            print("Produced record to topic {} partition [{}] @ offset {}"
-                  .format(msg.topic(), msg.partition(), msg.offset()))
+            #print("Produced record to topic {} partition [{}] @ offset {}"
+            #      .format(msg.topic(), msg.partition(), msg.offset()))
 
     #for breadcrumb in range(10):
     for breadcrumb in range(len(rj)):
