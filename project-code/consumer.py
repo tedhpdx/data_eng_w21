@@ -32,7 +32,7 @@ if __name__ == '__main__':
     # Read arguments and configurations and initialize
     args = ccloud_lib.parse_args()
     #config_file = '/home/herring/.confluent/librdkafka.config'
-    config_file = 'librdkafka.config'
+    config_file = 'C:\\Users\\Ted\\Desktop\\librdkafka.config'
     topic = 'breadcrumbs'
     conf = ccloud_lib.read_ccloud_config(config_file)
 
