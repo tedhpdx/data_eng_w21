@@ -63,6 +63,10 @@ if __name__ == '__main__':
                 # Initial message consumption may take up to
                 # `session.timeout.ms` for the consumer group to
                 # rebalance and start consuming
+                if data:
+                    with open('breadcrumb_data.json', 'w') as outfile:
+                        json.dump(data, outfile)
+                    data = []
                 print("Waiting for message or event/error in poll()")
                 continue
             elif msg.error():
@@ -76,11 +80,11 @@ if __name__ == '__main__':
                 print("Consumed record with key {} and value {}, \
                       and updated total count to {}"
                       .format(record_key, record_value, total_count))
-        with open('breadcrumb_data.json', 'w') as outfile:
-            json.dump(data, outfile)
+
     except KeyboardInterrupt:
         pass
     finally:
         # Leave group and commit final offsets
+
         consumer.close()
 
