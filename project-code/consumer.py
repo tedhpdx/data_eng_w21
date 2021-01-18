@@ -25,14 +25,15 @@
 from confluent_kafka import Consumer
 import json
 import ccloud_lib
+import datetime
 
 
 if __name__ == '__main__':
 
     # Read arguments and configurations and initialize
     args = ccloud_lib.parse_args()
-    #config_file = '/home/herring/.confluent/librdkafka.config'
-    config_file = 'C:\\Users\\Ted\\Desktop\\librdkafka.config'
+    config_file = '/home/herring/.confluent/librdkafka.config'
+    #config_file = 'C:\\Users\\Ted\\Desktop\\librdkafka.config'
     topic = 'breadcrumbs'
     conf = ccloud_lib.read_ccloud_config(config_file)
 
@@ -59,15 +60,16 @@ if __name__ == '__main__':
         while True:
             msg = consumer.poll(1.0)
             if msg is None:
+                timestamp = datetime.datetime.now()
                 # No message available within timeout.
                 # Initial message consumption may take up to
                 # `session.timeout.ms` for the consumer group to
                 # rebalance and start consuming
                 if data:
-                    with open('breadcrumb_data.json', 'w') as outfile:
+                    with open('/home/herring/data_eng_w21/project-code/breadcrumbs/' + timestamp + '.json', 'w') as outfile:
                         json.dump(data, outfile)
                     data = []
-                #print("Waiting for message or event/error in poll()")
+                print("Waiting for message or event/error in poll()")
                 continue
             elif msg.error():
                 print('error: {}'.format(msg.error()))
