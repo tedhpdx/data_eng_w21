@@ -6,14 +6,14 @@ import datetime
 
 
 def get_timestamp():
-    timestamp = str(datetime.datetime.now()+datetime.timedelta(hours=-7))
+    timestamp = str(datetime.datetime.now()+datetime.timedelta(hours=-8))
     return timestamp
 
 
 if __name__ == '__main__':
 
-    #config_file = '/home/herring/.confluent/librdkafka.config'
-    config_file = 'C:\\Users\\Ted\\Desktop\\librdkafka.config'
+    config_file = '/home/herring/.confluent/librdkafka.config'
+    #config_file = 'C:\\Users\\Ted\\Desktop\\librdkafka.config'
 
     topic = 'breadcrumbs'
     conf = ccloud_lib.read_ccloud_config(config_file)
@@ -31,8 +31,9 @@ if __name__ == '__main__':
     try:
         r = requests.get('http://rbi.ddns.net/getBreadCrumbData')
     except:
+        print("http://rbi.ddns.net/getBreadCrumbData not available")
         error_log = open("error_log.txt", "a")
-        error_log.write("\nhttp://rbi.ddns.net/getBreadCrumbData unavailable at " + get_timestamp())
+        error_log.write("http://rbi.ddns.net/getBreadCrumbData unavailable at " + get_timestamp() +"\n")
         error_log.close()
         exit(-1)
 
