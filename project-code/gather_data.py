@@ -2,11 +2,18 @@ import requests
 from confluent_kafka import Producer, KafkaError
 import json
 import ccloud_lib
+import datetime
+
+
+def get_timestamp():
+    timestamp = str(datetime.datetime.now()+datetime.timedelta(hours=-7))
+    return timestamp
+
 
 if __name__ == '__main__':
 
-    config_file = '/home/herring/.confluent/librdkafka.config'
-    #config_file = 'C:\\Users\\Ted\\Desktop\\librdkafka.config'
+    #config_file = '/home/herring/.confluent/librdkafka.config'
+    config_file = 'C:\\Users\\Ted\\Desktop\\librdkafka.config'
 
     topic = 'breadcrumbs'
     conf = ccloud_lib.read_ccloud_config(config_file)
@@ -21,7 +28,14 @@ if __name__ == '__main__':
             'sasl.password': conf['sasl.password'],
             'queue.buffering.max.messages': 1000000,
         })
-    r = requests.get('http://rbi.ddns.net/getBreadCrumbData')
+    try:
+        r = requests.get('http://rbi.ddns.net/getBreadCrumbData')
+    except:
+        error_log = open("error_log.txt", "a")
+        error_log.write("\nhttp://rbi.ddns.net/getBreadCrumbData unavailable at " + get_timestamp())
+        error_log.close()
+        exit(-1)
+
     rj = r.json()
 
     delivered_records = 0
@@ -47,21 +61,7 @@ if __name__ == '__main__':
             producer.poll(0)
 
     producer.flush()
-    '''
-    second = first['EVENT_NO_TRIP']
-    with open(json_file_path, 'w') as outfile:
-            json.dump(rj, outfile)
-    '''
 
 
-'''
-Notes:
-This will be called every day at 4am
-It will:
-        pull the data
-        make it json
-        
-        
-'''
 
 
