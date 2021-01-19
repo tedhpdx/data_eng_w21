@@ -60,7 +60,7 @@ if __name__ == '__main__':
         while True:
             msg = consumer.poll(1.0)
             if msg is None:
-                timestamp = datetime.datetime.now()
+                timestamp = str(datetime.datetime.now()+datetime.timedelta(hours=-7))
                 # No message available within timeout.
                 # Initial message consumption may take up to
                 # `session.timeout.ms` for the consumer group to
