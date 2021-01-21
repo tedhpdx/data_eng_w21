@@ -28,6 +28,8 @@ if __name__ == '__main__':
             'sasl.password': conf['sasl.password'],
             'queue.buffering.max.messages': 1000000,
         })
+
+
     '''
     try:
         r = requests.get('http://rbi.ddns.net/getBreadCrumbData')
