@@ -3,6 +3,7 @@ from confluent_kafka import Producer, KafkaError
 import json
 import ccloud_lib
 import datetime
+import random
 
 
 def get_timestamp():
@@ -59,7 +60,8 @@ if __name__ == '__main__':
 
     #for breadcrumb in range(10):
     for breadcrumb in range(1000):
-            record_key = "alice"
+            num = random.randint(1,5)
+            record_key = str(num)
             record_value = json.dumps(rj[breadcrumb])
             producer.produce(topic, key=record_key, value=record_value, on_delivery=acked)
             # p.poll() serves delivery reports (on_delivery)

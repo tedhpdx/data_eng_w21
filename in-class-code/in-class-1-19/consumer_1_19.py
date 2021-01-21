@@ -22,7 +22,7 @@
 #
 # =============================================================================
 
-from confluent_kafka import Consumer
+from confluent_kafka import Consumer, TopicPartition
 import json
 import ccloud_lib
 import datetime
@@ -52,6 +52,9 @@ if __name__ == '__main__':
 
     # Subscribe to topic
     consumer.subscribe([topic])
+    tp = TopicPartition(topic, 5)
+    consumer.assign([tp])
+
 
     # Process messages
     total_count = 0
@@ -66,7 +69,7 @@ if __name__ == '__main__':
                 # `session.timeout.ms` for the consumer group to
                 # rebalance and start consuming
                 if data:
-                    with open('example.json', 'w') as outfile:
+                    with open('C:\\Users\\Ted\\Desktop\\example.json', 'w') as outfile:
                         json.dump(data, outfile)
                     data = []
                 print("Waiting for message or event/error in poll()")
@@ -77,11 +80,12 @@ if __name__ == '__main__':
                 # Check for Kafka message
                 record_key = msg.key()
                 record_value = msg.value()
-                data.append(json.loads(record_value))
-                total_count += 1
-                print("Consumed record with key {} and value {}, \
-                      and updated total count to {}"
-                      .format(record_key, record_value, total_count))
+                if record_key is b'1':
+                    data.append(json.loads(record_value))
+                    total_count += 1
+                    print("Consumed record with key {} and value {}, \
+                        and updated total count to {}"
+                        .format(record_key, record_value, total_count))
 
     except KeyboardInterrupt:
         pass
