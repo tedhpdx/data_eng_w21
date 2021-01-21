@@ -40,7 +40,7 @@ if __name__ == '__main__':
         error_log.close()
         exit(-1)
     '''
-    with open('breadcrumb_data.json') as f:
+    with open('C:\\Users\\Ted\\Desktop\\breadcrumb_data.json') as f:
         rj = json.load(f)
 
     delivered_records = 0
