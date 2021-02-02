@@ -12,8 +12,8 @@ def get_timestamp():
 
 if __name__ == '__main__':
 
-    config_file = '/home/herring/.confluent/librdkafka.config'
-    #config_file = 'C:\\Users\\Ted\\Desktop\\librdkafka.config'
+    #config_file = '/home/herring/.confluent/librdkafka.config'
+    config_file = 'C:\\Users\\Ted\\Desktop\\librdkafka.config'
 
     topic = 'breadcrumbs'
     conf = ccloud_lib.read_ccloud_config(config_file)
