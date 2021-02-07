@@ -27,6 +27,7 @@ from db_script import send_to_db
 import json
 import ccloud_lib
 import datetime
+import threading
 
 
 
@@ -80,8 +81,11 @@ if __name__ == '__main__':
                 record_key = msg.key()
                 record_value = msg.value()
                 #validate, transform and add to database here
-                send_to_db(record_value)
+
                 data.append(json.loads(record_value))
+                if len(data) == 1000:
+                    send_to_db(data)
+                    data = []
                 total_count += 1
                 #print("Consumed record with key {} and value {}, \
                 #      and updated total count to {}"

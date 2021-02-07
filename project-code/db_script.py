@@ -1,7 +1,8 @@
 import datetime
 import json
 import os
-
+import random
+import time
 import pandas as pd
 from sqlalchemy import create_engine
 
@@ -25,52 +26,62 @@ def day_of_week(date):
 
 
 def send_to_db(json_package):
-    data = []
+
+    #data = []
     trip_df = None
     breadcrumb_df = None
-    data.append(json.loads(json_package))
-    with open('temp.json', 'w') as outfile:
-        json.dump(data, outfile)
-    df = pd.read_json('temp.json')
-    os.remove('temp.json')
+    #data.append(json.loads(json_package))
 
-    trip_ID = df['EVENT_NO_TRIP'][0]
-    date = get_date(df)
-    vehicle_id = df['VEHICLE_ID'][0]
-    service_key = day_of_week(date)
+    temp_file_name = str(random.getrandbits(128))
+    with open(temp_file_name, 'w') as outfile:
+        json.dump(json_package, outfile)
 
-    #set these later
-    route_id = 2
-    direction = 'Out'
+    df = pd.read_json(temp_file_name)
+    os.remove(temp_file_name)
+
+    for i in range(len(df)):
+        print(i)
+        trip_ID = df['EVENT_NO_TRIP'][i]
+        date = get_date(df)
+        vehicle_id = df['VEHICLE_ID'][i]
+        service_key = day_of_week(date)
+
+        #set these later
+        route_id = 2
+        direction = 'Out'
 
 
-    engine = create_engine('postgresql://:@34.105.70.119:5432/practice')
-    query = "SELECT trip_id FROM trip WHERE trip_id = " + str(trip_ID) + ";"
-    results = engine.execute(query)
-    if results.rowcount == 0:
-        trip_df = pd.DataFrame(columns=['trip_id', 'route_id', 'vehicle_id', 'service_key', 'direction'])
-        new_row = {'trip_id': trip_ID, 'route_id': route_id, 'vehicle_id': vehicle_id, 'service_key': service_key, 'direction': direction}
-        trip_df = trip_df.append(new_row, ignore_index=True)
-        trip_df.to_sql('trip', engine, if_exists='append', index=False)
+        engine = create_engine('postgresql://:@34.105.70.119:5432/practice')
+        query = "SELECT trip_id FROM trip WHERE trip_id = " + str(trip_ID) + ";"
+        results = engine.execute(query)
 
-    if df['GPS_LATITUDE'][0]:
-        latitude = df['GPS_LATITUDE'][0]
-    else:
-        latitude = None
-    if df['GPS_LONGITUDE'][0]:
-        longitude = df['GPS_LONGITUDE'][0]
-    else:
-        longitude = None
-    if df['DIRECTION'][0]:
-        direction = df['DIRECTION'][0]
-    else:
-        direction = None
-    if df['VELOCITY'][0]:
-        speed = df['VELOCITY'][0]
-    else:
-        speed = None
+        if results.rowcount == 0:
+            trip_df = pd.DataFrame(columns=['trip_id', 'route_id', 'vehicle_id', 'service_key', 'direction'])
+            new_row = {'trip_id': trip_ID, 'route_id': route_id, 'vehicle_id': vehicle_id, 'service_key': service_key, 'direction': direction}
+            trip_df = trip_df.append(new_row, ignore_index=True)
+            trip_df.to_sql('trip', engine, if_exists='append', index=False)
 
-    breadcrumb_df = pd.DataFrame(columns=['tstamp', 'latitude', 'longitude', 'direction', 'speed', 'trip_id'])
-    new_row = {'tstamp': date, 'latitude': latitude, 'longitude': longitude, 'direction': direction, 'speed': speed, 'trip_id': trip_ID}
-    breadcrumb_df = breadcrumb_df.append(new_row, ignore_index=True)
-    breadcrumb_df.to_sql('breadcrumb', engine, if_exists='append', index=False)
+        if df['GPS_LATITUDE'][i]:
+            latitude = df['GPS_LATITUDE'][i]
+        else:
+            latitude = None
+        if df['GPS_LONGITUDE'][i]:
+            longitude = df['GPS_LONGITUDE'][i]
+        else:
+            longitude = None
+        if df['DIRECTION'][i]:
+            direction = df['DIRECTION'][i]
+        else:
+            direction = None
+        if df['VELOCITY'][i]:
+            speed = df['VELOCITY'][i]
+        else:
+            speed = None
+
+        breadcrumb_df = pd.DataFrame(columns=['tstamp', 'latitude', 'longitude', 'direction', 'speed', 'trip_id'])
+        new_row = {'tstamp': date, 'latitude': latitude, 'longitude': longitude, 'direction': direction, 'speed': speed, 'trip_id': trip_ID}
+        breadcrumb_df = breadcrumb_df.append(new_row, ignore_index=True)
+        if i == len(df) - 1:
+            print(i + " final")
+            breadcrumb_df.to_sql('breadcrumb', engine, if_exists='append', index=False)
+
