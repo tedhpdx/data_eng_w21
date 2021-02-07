@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:postgresql://34.105.70.119:5432/ctran_data</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="practice" uuid="3114e11e-1fe0-4fb2-9f2a-b7abc8807665">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://34.105.70.119:5432/practice</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
