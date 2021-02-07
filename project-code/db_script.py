@@ -43,18 +43,27 @@ def send_to_db(json_package):
     prev_trip_id = None
 
     for i in range(len(df)):
-        print(i)
+        #print(i)
         trip_ID = df['EVENT_NO_TRIP'][i]
-        date = get_date(df)
+        try:
+            date = get_date(df)
+        except:
+            date = None
         vehicle_id = df['VEHICLE_ID'][i]
-        service_key = day_of_week(date)
+        '''
+        the service key may need to accept values of None if the date field is wrong
+        '''
+        try:
+            service_key = day_of_week(date)
+        except:
+            service_key = 'Weekday'
 
         #set these later
         route_id = 2
         direction = 'Out'
 
 
-        engine = create_engine('postgresql://:@34.105.70.119:5432/practice')
+        engine = create_engine('postgresql://herring:Entage1234@34.105.70.119:5432/practice')
         if trip_ID != prev_trip_id:
             query = "SELECT trip_id FROM trip WHERE trip_id = " + str(trip_ID) + ";"
             results = engine.execute(query)
@@ -86,7 +95,7 @@ def send_to_db(json_package):
         new_row = {'tstamp': date, 'latitude': latitude, 'longitude': longitude, 'direction': direction, 'speed': speed, 'trip_id': trip_ID}
         breadcrumb_df = breadcrumb_df.append(new_row, ignore_index=True)
         if i == len(df) - 1:
-            print(str(i) + " final")
+            #print(str(i) + " final")
             breadcrumb_df.to_sql('breadcrumb', engine, if_exists='append', index=False)
-            print("continuing")
+            #print("continuing")
 
