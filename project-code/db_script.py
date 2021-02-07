@@ -82,6 +82,6 @@ def send_to_db(json_package):
         new_row = {'tstamp': date, 'latitude': latitude, 'longitude': longitude, 'direction': direction, 'speed': speed, 'trip_id': trip_ID}
         breadcrumb_df = breadcrumb_df.append(new_row, ignore_index=True)
         if i == len(df) - 1:
-            print(i + " final")
+            print(str(i) + " final")
             breadcrumb_df.to_sql('breadcrumb', engine, if_exists='append', index=False)
 
