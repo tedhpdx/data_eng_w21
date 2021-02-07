@@ -44,7 +44,7 @@ def send_to_db(json_package):
     direction = 'Out'
 
 
-    engine = create_engine('postgresql://herring:Entage1234@34.105.70.119:5432/practice')
+    engine = create_engine('postgresql://:@34.105.70.119:5432/practice')
     query = "SELECT trip_id FROM trip WHERE trip_id = " + str(trip_ID) + ";"
     results = engine.execute(query)
     if results.rowcount == 0:
