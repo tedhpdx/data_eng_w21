@@ -43,7 +43,7 @@ def send_to_db(json_package):
     prev_trip_id = None
 
     for i in range(len(df)):
-        #print(i)
+        print(i)
         trip_ID = df['EVENT_NO_TRIP'][i]
         try:
             date = get_date(df)
@@ -95,7 +95,7 @@ def send_to_db(json_package):
         new_row = {'tstamp': date, 'latitude': latitude, 'longitude': longitude, 'direction': direction, 'speed': speed, 'trip_id': trip_ID}
         breadcrumb_df = breadcrumb_df.append(new_row, ignore_index=True)
         if i == len(df) - 1:
-            #print(str(i) + " final")
+            print(str(i) + " final")
             breadcrumb_df.to_sql('breadcrumb', engine, if_exists='append', index=False)
-            #print("continuing")
+            print("continuing")
 
