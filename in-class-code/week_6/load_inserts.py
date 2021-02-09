@@ -8,11 +8,11 @@ import re
 import csv
 
 DBname = "storact"
-DBuser = "sauser"
-DBpwd = "hello"
-TableName = 'CensusData'
-Datafile = "filedoesnotexist"  # name of the data file to be loaded
-CreateDB = False  # indicates whether the DB table should be (re)-created
+DBuser = "herring"
+DBpwd = "Entage1234"
+TableName = 'CensusData_2'
+Datafile = "Oregon2015"  # name of the data file to be loaded
+CreateDB = True  # indicates whether the DB table should be (re)-created
 Year = 2015
 
 def row2vals(row):
@@ -107,7 +107,7 @@ def getSQLcmnds(rowlist):
 # connect to the database
 def dbconnect():
     connection = psycopg2.connect(
-        host="localhost",
+        host="34.105.70.119",
         database=DBname,
         user=DBuser,
         password=DBpwd,
