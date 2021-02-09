@@ -9,11 +9,11 @@ import csv
 
 DBname = "storact"
 DBuser = "herring"
-DBpwd = "Entage1234"
-TableName = 'CensusData_2'
-Datafile = "Oregon2015"  # name of the data file to be loaded
+DBpwd = ""
+TableName = 'CensusData'
+Datafile = "Oregon2017"  # name of the data file to be loaded
 CreateDB = True  # indicates whether the DB table should be (re)-created
-Year = 2015
+Year = 2017
 
 def row2vals(row):
     # handle the null vals
@@ -162,8 +162,8 @@ def createTable(conn):
             	FamilyWork          DECIMAL,
             	Unemployment        DECIMAL
          	);	
-         	ALTER TABLE {TableName} ADD PRIMARY KEY (Year, CensusTract);
-         	CREATE INDEX idx_{TableName}_State ON {TableName}(State);
+         	-- ALTER TABLE {TableName} ADD PRIMARY KEY (Year, CensusTract);
+         	-- CREATE INDEX idx_{TableName}_State ON {TableName}(State);
     	""")
 
         print(f"Created {TableName}")
