@@ -43,7 +43,7 @@ def send_to_db(json_package):
 
     breadcrumb_df = pd.DataFrame(columns=['tstamp', 'latitude', 'longitude', 'direction', 'speed', 'trip_id'])
     prev_trip_id = None
-    engine = create_engine('postgresql://:4@34.105.70.119:5432/practice')
+    engine = create_engine('postgresql://herring:Entage1234@34.105.70.119:5432/practice')
     for i in range(len(df)):
         print(i)
         trip_ID = df['EVENT_NO_TRIP'][i]
@@ -97,7 +97,5 @@ def send_to_db(json_package):
         new_row = {'tstamp': date, 'latitude': latitude, 'longitude': longitude, 'direction': direction, 'speed': speed, 'trip_id': trip_ID}
         breadcrumb_df = breadcrumb_df.append(new_row, ignore_index=True)
         if i == len(df) - 1:
-            print(str(i) + " final")
-            breadcrumb_df.to_sql('breadcrumb', engine, if_exists='append', index=False)
-            print("continuing")
+            breadcrumb_df.to_sql('breadcrumb', engine, if_exists='append', index=False, method='multi', chunksize=10000)
 
