@@ -22,7 +22,7 @@ def day_of_week(date):
     if day_of_week == 5:
         return 'Saturday'
     if day_of_week == 6:
-        return 'Sunday'
+        return  'Sunday'
 
 
 def send_to_db(json_package):
