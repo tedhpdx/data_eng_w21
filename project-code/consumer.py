@@ -68,9 +68,15 @@ if __name__ == '__main__':
                 # Initial message consumption may take up to
                 # `session.timeout.ms` for the consumer group to
                 # rebalance and start consuming
+                '''
                 if data:
                     with open('/home/herring/data_eng_w21/project-code/breadcrumbs/' + timestamp + 'count' + str(len(data)) + '.json', 'w') as outfile:
                         json.dump(data, outfile)
+                    data = []
+                '''
+                #send remaining messages to db
+                if data:
+                    send_to_db(data)
                     data = []
                 print("Waiting for message or event/error in poll()")
                 continue

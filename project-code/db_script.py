@@ -29,11 +29,6 @@ def day_of_week(date):
 
 def send_to_db(json_package):
 
-    #data = []
-    trip_df = None
-    breadcrumb_df = None
-    #data.append(json.loads(json_package))
-
     temp_file_name = str(random.getrandbits(128))
     with open(temp_file_name, 'w') as outfile:
         json.dump(json_package, outfile)
@@ -45,7 +40,7 @@ def send_to_db(json_package):
     prev_trip_id = None
     engine = create_engine('postgresql://:@34.105.70.119:5432/practice')
     for i in range(len(df)):
-        print(i)
+        #print(i)
         trip_ID = df['EVENT_NO_TRIP'][i]
         try:
             date = get_date(df)
