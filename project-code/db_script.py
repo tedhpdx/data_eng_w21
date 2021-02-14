@@ -7,10 +7,10 @@ import pandas as pd
 from sqlalchemy import create_engine
 
 
-def get_date(df):
-    time = int(df['ACT_TIME'][0])
+def get_date(df,i):
+    time = int(df['ACT_TIME'][i])
     time = (str(datetime.timedelta(seconds=time)))
-    date = df['OPD_DATE'][0]
+    date = df['OPD_DATE'][i]
     date += ' ' + time
     date = datetime.datetime.strptime(date, '%d-%b-%y %H:%M:%S')
     return date
@@ -37,7 +37,7 @@ def get_dataframe(json_package):
 def validate_data(df,i):
     trip_ID = df['EVENT_NO_TRIP'][i]
     try:
-        date = get_date(df)
+        date = get_date(df,i)
     except:
         date = None
     vehicle_id = df['VEHICLE_ID'][i]
@@ -46,9 +46,7 @@ def validate_data(df,i):
     except:
         service_key = 'Weekday'
 
-    #set these later
-    route_id = 2
-    direction = 'Out'
+
 
     if df['GPS_LATITUDE'][i]:
         latitude = df['GPS_LATITUDE'][i]
@@ -67,6 +65,8 @@ def validate_data(df,i):
     else:
         speed = None
 
+    #set these later
+    route_id = 2
     direction = 'Out'
 
     validated_data = {
