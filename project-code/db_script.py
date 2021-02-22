@@ -7,13 +7,14 @@ import pandas as pd
 from sqlalchemy import create_engine
 
 
-def get_date(df,i):
+def get_date(df, i):
     time = int(df['ACT_TIME'][i])
     time = (str(datetime.timedelta(seconds=time)))
     date = df['OPD_DATE'][i]
     date += ' ' + time
     date = datetime.datetime.strptime(date, '%d-%b-%y %H:%M:%S')
     return date
+
 
 def day_of_week(date):
     day_of_week = date.weekday()
@@ -22,7 +23,8 @@ def day_of_week(date):
     if day_of_week == 5:
         return 'Saturday'
     if day_of_week == 6:
-        return  'Sunday'
+        return 'Sunday'
+
 
 def get_dataframe(json_package):
     temp_file_name = str(random.getrandbits(128))
@@ -34,10 +36,10 @@ def get_dataframe(json_package):
     return df
 
 
-def validate_data(df,i):
+def validate_data(df, i):
     trip_ID = df['EVENT_NO_TRIP'][i]
     try:
-        date = get_date(df,i)
+        date = get_date(df, i)
     except:
         date = None
     vehicle_id = df['VEHICLE_ID'][i]
@@ -45,8 +47,6 @@ def validate_data(df,i):
         service_key = day_of_week(date)
     except:
         service_key = 'Weekday'
-
-
 
     if df['GPS_LATITUDE'][i]:
         latitude = df['GPS_LATITUDE'][i]
@@ -65,9 +65,9 @@ def validate_data(df,i):
     else:
         speed = None
 
-    #set these later
+    # set these later
     route_id = 2
-    direction = 'Out'
+    #direction = 'Out'
 
     validated_data = {
         'trip_id': trip_ID,
@@ -113,19 +113,18 @@ def append_breadcrumb_df(validated_data, breadcrumb_df):
 
 
 def send_to_db(json_package):
-
     username = ''
     password = ''
+    database = 'practice'
     df = get_dataframe(json_package)
     breadcrumb_df = pd.DataFrame(columns=['tstamp', 'latitude', 'longitude', 'direction', 'speed', 'trip_id'])
     prev_trip_id = None
-    engine = create_engine('postgresql://'+username+':'+password+'@34.105.70.119:5432/practice')
+    engine = create_engine('postgresql://' + username + ':' + password + '@34.105.70.119:5432/' + database)
 
     for i in range(len(df)):
         validated_data = validate_data(df, i)
         if validated_data['trip_id'] != prev_trip_id:
             prev_trip_id = send_to_trip_db(engine, validated_data)
-        append_breadcrumb_df(validated_data, breadcrumb_df)
+        breadcrumb_df = append_breadcrumb_df(validated_data, breadcrumb_df)
         if i == len(df) - 1:
             breadcrumb_df.to_sql('breadcrumb', engine, if_exists='append', index=False, method='multi', chunksize=10000)
-
