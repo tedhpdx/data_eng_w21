@@ -47,7 +47,7 @@ def process_breadcrumbs():
                     send_to_db(data)
                     data = []
                 print("Waiting for message or event/error in poll()")
-                continue
+                break
             elif msg.error():
                 print('error: {}'.format(msg.error()))
             else:
@@ -67,9 +67,9 @@ def process_breadcrumbs():
 
     except KeyboardInterrupt:
         pass
-    finally:
+    #finally:
         # Leave group and commit final offsets
-        consumer.close()
+        #consumer.close()
 
 
 def process_stop_events():
@@ -80,7 +80,7 @@ def process_stop_events():
             msg = consumer.poll(1.0)
             if msg is None:
                 print("Waiting for message or event/error in poll()")
-                continue
+                break
             elif msg.error():
                 print('error: {}'.format(msg.error()))
             else:
@@ -90,9 +90,9 @@ def process_stop_events():
                 send_to_stop_events_db(record_value)
     except KeyboardInterrupt:
         pass
-    finally:
+    #finally:
         # Leave group and commit final offsets
-        consumer.close()
+        #consumer.close()
 
 
 
@@ -100,8 +100,8 @@ def process_stop_events():
 if __name__ == '__main__':
     # Read arguments and configurations and initialize
     args = ccloud_lib.parse_args()
-    #config_file = '/home/herring/.confluent/librdkafka.config'
-    config_file = 'C:\\Users\\Ted\\Desktop\\librdkafka.config'
+    config_file = '/home/herring/.confluent/librdkafka.config'
+    #config_file = 'C:\\Users\\Ted\\Desktop\\librdkafka.config'
     topic = 'breadcrumbs'
     conf = ccloud_lib.read_ccloud_config(config_file)
 
@@ -120,9 +120,9 @@ if __name__ == '__main__':
 
     # Subscribe to topic
     consumer.subscribe([topic])
-
-    #process_breadcrumbs()
-    process_stop_events()
+    while True:
+        process_breadcrumbs()
+        process_stop_events()
 
 
 

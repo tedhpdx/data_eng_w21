@@ -24,12 +24,14 @@ def validate_data(df, i):
     if df['direction'][i] is 0:
         direction = 'Out'
     elif df['direction'][i] is 1:
-        direction = 'Back'
-    else:
         direction = 'Out'
+    else:
+        direction = 'Back'
 
     if df['service_key'][i] is 'S':
         service_key = 'Saturday'
+    elif df['service_key'][i] is 'U':
+        service_key = 'Sunday'
     else:
         service_key = 'Weekday'
 
