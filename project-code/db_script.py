@@ -113,14 +113,13 @@ def append_breadcrumb_df(validated_data, breadcrumb_df):
 
 
 def send_to_db(json_package):
-    username = ''
-    password = ''
+    username = 'herring'
+    password = 'Entage1234'
     database = 'practice'
     df = get_dataframe(json_package)
     breadcrumb_df = pd.DataFrame(columns=['tstamp', 'latitude', 'longitude', 'direction', 'speed', 'trip_id'])
     prev_trip_id = None
     engine = create_engine('postgresql://' + username + ':' + password + '@34.105.70.119:5432/' + database)
-
     for i in range(len(df)):
         validated_data = validate_data(df, i)
         if validated_data['trip_id'] != prev_trip_id:
