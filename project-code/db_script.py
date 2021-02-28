@@ -66,7 +66,7 @@ def validate_data(df, i):
         speed = None
 
     # set these later
-    route_id = 2
+    route_id = None
     #direction = 'Out'
 
     validated_data = {

@@ -49,9 +49,7 @@ def send_to_trip_db(engine, validated_data):
     route_number = str(validated_data['route_number'])
     service_key = str(validated_data['service_key'])
     direction = str(validated_data['direction'])
-    query = "UPDATE trip SET route_id = "+route_number+" WHERE trip_id = "+trip_id
-    engine.execute(query)
-    query = "UPDATE trip SET service_key = '%s', direction = '%s' WHERE trip_id = %s;" % (service_key, direction, trip_id)
+    query = "UPDATE trip SET route_id = '%s', service_key = '%s', direction = '%s' WHERE trip_id = %s;" % (route_number, service_key, direction, trip_id)
     results = engine.execute(query)
     return validated_data['trip_id']
 
@@ -70,7 +68,7 @@ def append_breadcrumb_df(validated_data, breadcrumb_df):
 
 
 def send_to_stop_events_db(json_package):
-    username = ''
+    username = 'herring'
     password = ''
     database = 'practice'
     df = get_dataframe(json_package)

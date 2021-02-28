@@ -100,8 +100,8 @@ def process_stop_events():
 if __name__ == '__main__':
     # Read arguments and configurations and initialize
     args = ccloud_lib.parse_args()
-    config_file = '/home/herring/.confluent/librdkafka.config'
-    #config_file = 'C:\\Users\\Ted\\Desktop\\librdkafka.config'
+    #config_file = '/home/herring/.confluent/librdkafka.config'
+    config_file = 'C:\\Users\\Ted\\Desktop\\librdkafka.config'
     topic = 'breadcrumbs'
     conf = ccloud_lib.read_ccloud_config(config_file)
 
@@ -121,7 +121,7 @@ if __name__ == '__main__':
     # Subscribe to topic
     consumer.subscribe([topic])
     while True:
-        process_breadcrumbs()
+        #process_breadcrumbs()
         process_stop_events()
 
 
