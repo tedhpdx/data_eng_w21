@@ -70,8 +70,8 @@ def append_breadcrumb_df(validated_data, breadcrumb_df):
 
 
 def send_to_stop_events_db(json_package):
-    username = 'herring'
-    password = 'Entage1234'
+    username = ''
+    password = ''
     database = 'practice'
     df = get_dataframe(json_package)
     prev_trip_id = None

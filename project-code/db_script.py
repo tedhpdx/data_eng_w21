@@ -113,8 +113,8 @@ def append_breadcrumb_df(validated_data, breadcrumb_df):
 
 
 def send_to_db(json_package):
-    username = 'herring'
-    password = 'Entage1234'
+    username = ''
+    password = ''
     database = 'practice'
     df = get_dataframe(json_package)
     breadcrumb_df = pd.DataFrame(columns=['tstamp', 'latitude', 'longitude', 'direction', 'speed', 'trip_id'])
